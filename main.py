@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, PlainTextResponse
 from pydantic import BaseModel
 import edge_tts
 import io
-import asyncio
 
 app = FastAPI()
 
@@ -14,6 +13,11 @@ class TTSRequest(BaseModel):
 @app.get("/")
 async def root():
     return {"status": "Mai TTS server is running"}
+
+@app.get("/ping")
+@app.head("/ping")
+async def ping():
+    return PlainTextResponse("OK")
 
 @app.post("/tts")
 async def tts(request: TTSRequest):
